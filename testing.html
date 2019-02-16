@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<title>W3.JS</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+<body class="w3-container">
+<div class="w3-bar w3-black">
+  <a href="#" class="w3-bar-item w3-button">Home</a>
+  <a href="#" class="w3-bar-item w3-button">Link 1</a>
+  <a href="#" class="w3-bar-item w3-button">Link 2</a>
+  <a href="#" class="w3-bar-item w3-button">Link 3</a>
+</div>
+<h2>Testing W3.JS with CSS</h2>
+  <div class="w3-container" w3-tiny>
+    <form method="post" action="/sql" class="w3-container">
+  <p>
+    <label>Name</label>
+    <input type="text" name="name" class="w3-input w3-border w3-light-grey w3-border-0" />    
+  </p>
+  <p>
+    <label>Phone</label>
+    <input type="text" name="phone"  class="w3-input w3-border w3-light-grey w3-border-0"/>    
+  </p>
+  <p>
+    <input type="submit" value="save" / class="w3-input">    
+  </p>
+</form>
+<table border="1" id="id01" class="w3-table w3-tiny w3-card-4">
+<tr class="w3-blue">
+  <th class="w3-center">ID</th>
+  <th class="w3-center">Name</th>
+  <th class="w3-center">Phone</th>
+</tr>
+  <tr  w3-repeat="names">
+  <td>{{ Id }}</td>
+  <td>{{ Name }}</td>
+  <td>{{ Phone }}</td>
+</tr>
+  </table>
+  </div>
+  <p>
+    &nbsp;
+  </p>
+<script>
+w3.hide("#id01");
+w3.getHttpObject("https://redis-node.glitch.me/sql", myFunction);
+
+function myFunction(myObject) {
+  w3.displayObject("id01", myObject);
+  w3.show("#id01");
+}
+</script>
+
+</body>
+</html> 
