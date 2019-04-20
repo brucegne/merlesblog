@@ -123,9 +123,9 @@
 
   const auth = firebase.auth();  
 
-const ref = firebase.database().ref();
+const refI = firebase.database().ref();
   
-const refB = ref.child('/brucegneblog');
+const ref = refI.child('/brucegneblog');
 
 function shwLoginState() {
    $('#email').hide();
