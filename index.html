@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           var trow = rtable.insertRow(-1);
           var cell1 = trow.insertCell(-1);
           cell1.innerHTML = '';
-          cell1.innerHTML = '<strong onclick='+'lineEdit("'+key+'")>'+childData['post_title']+'<i> created on '+prtDate(childData['createdTime'])+'</i></strong>';
+          cell1.innerHTML = '<strong style='cursor: pointer;' onclick='+'lineEdit("'+key+'")>'+childData['post_title']+'<i> created on '+prtDate(childData['createdTime'])+'</i></strong>';
           var trow = rtable.insertRow(-1);
           var cell1 = trow.insertCell(-1);
           cell1.innerHTML = '';          
