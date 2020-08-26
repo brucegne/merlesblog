@@ -241,6 +241,7 @@
         recOut['email'] = email;
         recOut['password'] = pass;
         refU.push(recOut);
+        shwLoginState();
         /*        
                 firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
                     var errorCode = error.code;
