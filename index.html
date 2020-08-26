@@ -13,6 +13,12 @@
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("user_pcBNICSJtsYmQTcovup2o");
+        })();
+    </script>
 </head>
 <style>
     body {
@@ -241,7 +247,7 @@
         recOut['email'] = email;
         recOut['password'] = pass;
         refU.push(recOut);
-        shwLoginState();
+        shwLogoutState();
         /*        
                 firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
                     var errorCode = error.code;
