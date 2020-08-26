@@ -231,11 +231,11 @@
         const email = document.getElementById("email").value.toUpperCase();
         const pass = document.getElementById("passw").value;
         if (email.includes('MERLE') || email.includes('BRUCE')) {
-            dispMode = 'A'
+            dispMode = 'A';
             shwLoginState();
         } else {
-            dispMode = 'G'
-            shwLogoutState()
+            dispMode = 'G';
+            shwLogoutState();
         }
     });
 
@@ -247,6 +247,7 @@
         recOut['email'] = email;
         recOut['password'] = pass;
         refU.push(recOut);
+        dispMode = 'G';
         shwLogoutState();
         /*        
                 firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
