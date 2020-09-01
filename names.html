@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-lite.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-lite.js"></script>
+  <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"></script>
+</head>
+<body>
+  <div class="container">    
+  <button class="button" onclick="home();">Home</button>
+  <button class="button" onclick="upload();">Upload</button>
+  <div class="alert alert-warning" role="alert" id="alert">
+    A simple warning alert—check it out!
+  </div>
+  <form id="newContact">
+    <input type="hidden" id="kv" name="kv" value="" />
+    <div class="form-group">
+      <label for="exampleName">Name</label>
+      <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="Enter name">
+    </div>
+     <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
+     <div class="form-group">
+      <label for="exampleInputPassword1">Email</label>
+      <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
+     <div class="form-group">
+      <label for="exampleInputBio1">About</label>
+        <textarea id="summernote" name="editordata" rows="20"></textarea>
+    </div>
+    <button type="submit" id="btn" class="btn btn-primary">Add</button>
+    <button type="reset" class="btn btn-primary">Reset</button>
+  </form>
+  <div id="peopleList">
+  </div>
+  <table id="tResults" cellspacing="4" cellpadding="4">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>EMail</th>
+      <th>Password</th>
+    </tr>
+  </table>
+  </div>
+  </body>
+<script>
+    
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAK2XApgMbt7DE8tXiIdn9pPMUNvZS5tCA",
+    authDomain: "socialpancakes-d1dad.firebaseapp.com",
+    databaseURL: "https://socialpancakes-d1dad.firebaseio.com",
+    projectId: "socialpancakes-d1dad",
+    storageBucket: "socialpancakes-d1dad.appspot.com",
+    messagingSenderId: "812779768104"
+  };
+  
+  firebase.initializeApp(config);
+  
+  const auth = firebase.auth();  
+  
+  document.addEventListener("DOMContentLoaded", function(event) {
+        event.preventDefault();
+        const email = 'admin@gmail.com';
+        const pass = 'admin101';
+        firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
+            var errorCode = error.code;
+  });
+      
+var pusher = new Pusher('ef2e355912895f0ed3ed', {
+  cluster: 'mt1'
+});
+  
+var channel = pusher.subscribe('myChannel');
+  
+channel.bind('my-event', function(data) {
+  alert('An event was triggered with message: ' + data.message);
+});
+  
+  const ref = firebase.database().ref();
+  const ref2 = ref.child('/Starter');
+  const ref3 = ref.child('/ender');
+  const refB = ref.child('/blog');
+  const refN = ref.child('/names');
+  const refL = ref.child('/links');
+
+$('form').submit(function() {
+      event.preventDefault();
+      recOut = new Object();
+      recKey=$('#kv').val();
+      recOut['name'] = $('#name').val();
+      recOut['password'] = $('#password').val();
+      recOut['email'] = $('#email').val();
+      recOut['about'] = $('#summernote').summernote('code');
+      if(($('#kv').val().length ) > 0) {
+        refN.child(recKey).update(recOut);
+        $('#btn').html("Add");
+        $('#kv').val('');
+        $('#alert').html("Record has been updated");
+
+      } else {
+        refN.push(recOut);
+        $('#alert').html("Record has been created");
+        $('#name').val(' ');
+        $('#kv').val(' ');
+        $('#email').val(' ');
+        $('#password').val(' ');
+        $('#summernote').summernote('code', ' ');
+      }
+        $('#name').val('');
+        $('#kv').val('');
+        $('#email').val('');
+        $('#password').val('');
+        $('#summernote').summernote('code', ' ');
+        $('#btn').html("Add");
+        $('#kv').val('');
+//      document.location="/index.html";
+    
+});
+  
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    loadlist();
+    $('#summernote').summernote({
+      tabsize: 2,
+      height: 100
+    });
+  });
+  
+  function lineEdit(rec) {
+    refN.child(rec).on("value", function(snapshot) {
+      $('#alert').html("Editing Record");
+      $('#kv').val(snapshot.key);
+      $('#name').val(snapshot.val().name);
+      $('#email').val(snapshot.val().email);
+      $('#password').val(snapshot.val().password);
+      $('#summernote').summernote('code', snapshot.val().about);
+      $('#btn').html("Update");
+      $('#alert').html("Editing Record for "+snapshot.val().name);
+    });
+  }
+  
+  function lineDelete(rec) {
+    refN.child(rec).remove();
+    $('#alert').html("Record has been deleted");
+
+    //    refN.child(rec).update({"name":"Pluto"});
+//    refN.child(rec).remove();
+    
+    
+  }
+  
+    function upload() {
+      document.location="/upload.html";
+    }
+
+    function home() {
+      document.location="/index.html";
+    }
+  function loadlist() {    
+      refN.orderByChild("name").on("value", function(snapshot) {
+        $("#tResults").find("tr:not(:first)").remove();
+        var rtable = document.getElementById("tResults");
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          var childData = childSnapshot.val();
+          var trow = rtable.insertRow(-1);
+          var cell1 = trow.insertCell(-1);
+          var cell2 = trow.insertCell(-1);
+          var cell3 = trow.insertCell(-1);
+          var cell4 = trow.insertCell(-1);
+          var cell5 = trow.insertCell(-1);
+          cell1.innerHTML = '<button type="button" class="btn btn-outline-info btn-sm" onclick='+'lineEdit("'+key+'")><i class="fas fa-edit"></i></button>';
+          cell2.innerHTML = childData['name'];
+          cell3.innerHTML = childData['email'];
+          cell4.innerHTML = childData['password'];
+          cell5.innerHTML = '<button type="button" class="btn btn-outline-info btn-sm " onclick='+'lineDelete("'+key+'")><i class="fas fa-trash"></i></button>';
+        });
+      });
+    $('#alert').html("List Loaded");
+  };
+
+
+  
+</script>
+
+</html>
